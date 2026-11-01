@@ -244,6 +244,10 @@ impl ModelRegistry {
     }
 
     pub fn has_configured_auth(&self, model: &Model) -> bool {
+        // Claude Agent's login belongs to `claude`; an installed executable is the credential.
+        if model.provider == pa_ai::claude_agent::CLAUDE_AGENT_PROVIDER_ID {
+            return pa_ai::claude_agent::find_claude_executable().is_some();
+        }
         self.auth.has_auth(&model.provider)
             || self.has_configured_provider_request_auth(&model.provider)
     }
@@ -405,6 +409,13 @@ impl ModelRegistry {
 
         let credentials = self.prime_credentials();
         let mut built_in = self.load_built_in_models(&result, credentials.as_ref());
+        // Claude Agent (Rust-only) serves the Anthropic models through the user's `claude`.
+        let claude_agent: Vec<Model> = built_in
+            .iter()
+            .filter(|model| model.provider == "anthropic")
+            .map(pa_ai::claude_agent::claude_agent_model)
+            .collect();
+        built_in.extend(claude_agent);
         built_in.extend(private_models.into_values());
         self.models = Self::merge_custom_models(built_in, result.models);
         self.apply_subscription_model_adaptations();

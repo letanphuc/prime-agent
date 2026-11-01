@@ -3,6 +3,7 @@
 pub mod anthropic;
 pub mod azure_openai_responses;
 pub mod bedrock;
+pub mod claude_agent;
 pub mod faux;
 pub mod google;
 pub mod google_shared;
