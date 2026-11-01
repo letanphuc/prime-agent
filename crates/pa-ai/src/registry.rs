@@ -119,6 +119,8 @@ pub fn register_builtin_api_providers() {
         Arc::new(crate::providers::mistral::MistralConversationsProvider),
         Arc::new(crate::providers::bedrock::BedrockConverseStreamProvider),
         Arc::new(crate::providers::openai_codex_responses::OpenAICodexResponsesProvider),
+        // Rust-only: runs the user's `claude` (no TS counterpart).
+        Arc::new(crate::providers::claude_agent::ClaudeAgentProvider),
     ];
     for provider in builtins {
         registry.insert(

@@ -24,6 +24,15 @@ mod prime_inference_differential_test;
 pub use event_stream::{AssistantMessageEventExt, AssistantMessageEventStream};
 pub use providers::faux;
 
+/// The Claude Agent provider's surface for the catalog layer: its ids, the `claude` lookup, and
+/// the derivation of its models from the Anthropic catalog.
+pub mod claude_agent {
+    pub use crate::providers::claude_agent::{
+        claude_agent_model, find_claude_executable, API_CLAUDE_AGENT, CLAUDE_AGENT_PROVIDER_ID,
+        CLAUDE_PATH_ENV,
+    };
+}
+
 /// Codex WebSocket session debugging and cleanup surface (TS
 /// `getOpenAICodexWebSocketDebugStats` and its reset/close siblings).
 pub mod codex_debug {
